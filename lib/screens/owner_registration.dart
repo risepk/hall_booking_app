@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hall_booking_app/model/user.dart';
+import 'package:hall_booking_app/screens/login_screen.dart';
 import 'package:hall_booking_app/utilities/datastore.dart';
 import 'package:http/http.dart' as http;
-import 'api/api_connection.dart';
+import '../api/api_connection.dart';
 
 class OwnerRegistration extends StatefulWidget {
   const OwnerRegistration({super.key});
@@ -27,7 +28,11 @@ class _OwnerRegistrationState extends State<OwnerRegistration> {
       if (res.statusCode == 200) {
         var resBody = jsonDecode(res.body);
         if (resBody['emailFound'] == true) {
-          Fluttertoast.showToast(msg: "Email Address Already Registered.",fontSize: 25,);
+          Fluttertoast.showToast(
+            msg: "Email Address Already Registered.",
+            fontSize: 25,
+            backgroundColor: Colors.red,
+          );
           return;
         } else {
           //save it to db
@@ -57,18 +62,22 @@ class _OwnerRegistrationState extends State<OwnerRegistration> {
         Uri.parse(API.signUp),
         body: user.toJson(),
       );
-      if(res.statusCode == 200){
-       var responseBodyOfSignUp = jsonDecode(res.body);
-       if(responseBodyOfSignUp['success'] == true){
-         formKey.currentState!.reset();
-         Fluttertoast.showToast(msg: "Register Successfully Please Login!");
-       }
-       else {
-         Fluttertoast.showToast(msg: "Error Occurred Please Try Again Later");
-       }
-      } else { Fluttertoast.showToast(msg: "Cannot Hit API"); }
-    }
-    catch (e) {
+      if (res.statusCode == 200) {
+        var responseBodyOfSignUp = jsonDecode(res.body);
+        if (responseBodyOfSignUp['success'] == true) {
+          formKey.currentState!.reset();
+          Fluttertoast.showToast(
+            msg: "Register Successfully Please Login!",
+            fontSize: 23,
+            backgroundColor: Colors.green,
+          );
+        } else {
+          Fluttertoast.showToast(msg: "Error Occurred Please Try Again Later");
+        }
+      } else {
+        Fluttertoast.showToast(msg: "Cannot Hit API");
+      }
+    } catch (e) {
       print(e.toString());
       Fluttertoast.showToast(msg: e.toString());
     }
@@ -264,10 +273,10 @@ class _OwnerRegistrationState extends State<OwnerRegistration> {
                   onPressed: () {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
-                      return const Placeholder();
+                      return const LoginScreen();
                     }));
                   },
-                  child: const Text('View All')),
+                  child: const Text('Already Registered Login Here')),
             ],
           ),
         ),

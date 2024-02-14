@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hall_booking_app/owner_registration.dart';
+import 'package:hall_booking_app/screens/owner_registration.dart';
 import 'package:hall_booking_app/screens/custom_card.dart';
 
 class PreRegistrationScreen extends StatefulWidget {
