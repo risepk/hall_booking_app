@@ -15,6 +15,8 @@ class User {
       required this.user_type
       });
 
+
+
   User.fromJson(Map<String, dynamic> json) {
     id = int.parse(json['id']);
     user_name = json['user_name'];

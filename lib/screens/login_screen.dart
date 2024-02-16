@@ -1,11 +1,13 @@
 import 'dart:convert';
+import 'dart:js';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hall_booking_app/model/user.dart';
+import 'package:hall_booking_app/screens/dashboard_screen.dart';
 import 'package:hall_booking_app/screens/owner_registration.dart';
-import 'package:hall_booking_app/utilities/datastore.dart';
+import 'package:hall_booking_app/utilities/user_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../api/api_connection.dart';
+import '../model/user.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,22 +22,46 @@ class _LoginScreenState extends State<LoginScreen> {
   late String name, email, password, confirmPassword, mobile, address;
 
   loginUserNow() async {
+    //List<UserDetail> userDetails = [];
     try {
       var res = await http.post(
         Uri.parse(API.login),
-        body: {'user_email': email, 'user_password':password},
+        body: {'user_email': email, 'user_password': password},
       );
       if (res.statusCode == 200) {
         var resBodyOfLogin = jsonDecode(res.body);
+        var jsonObject = json.decode(res.body);
         if (resBodyOfLogin['success'] == true) {
           Fluttertoast.showToast(
             msg: "Your are Successfully Logged-In.",
             fontSize: 25,
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.green,
           );
-          User.fromJson(resBodyOfLogin['userData']);
 
-          return;
+          // Access specific values in the JSON
+          bool success = jsonObject['success'];
+          Map<String, dynamic> userData = jsonObject['userData'];
+          // Access values within userData
+          int userId = userData['id'];
+          String userName = userData['user_name'];
+          String userEmail = userData['user_email'];
+          String userMobile = userData['user_mobile'];
+          String userType = userData['user_type'];
+          String userPassword = userData['user_password'];
+          User userInfo = User(
+              id: userId,
+              user_name: userName,
+              user_email: userEmail,
+              user_password: userPassword,
+              user_mobile: userMobile,
+              user_type: userType);
+              RememberUserPrefs.saveRememberUser(userInfo);
+              Navigator.of(context as BuildContext).pushReplacement(MaterialPageRoute(
+                  builder: (context){
+                    return const DashBoard();
+                  }
+              ));
+
         } else {
           Fluttertoast.showToast(msg: "Please Provide Valid Email/Password");
         }
@@ -43,43 +69,13 @@ class _LoginScreenState extends State<LoginScreen> {
         Fluttertoast.showToast(msg: "Error: Cannot Hit API");
       }
     } catch (e) {
-      print(e);
-      Fluttertoast.showToast(msg: "error: $e");
-    }
-  }
-
-  String _selectedUserType = usertype[0];
-
-  registerAndSaveUserRecord() async {
-    User user = User(
-        user_name: name,
-        user_email: email,
-        user_password: password,
-        user_mobile: mobile,
-        user_type: _selectedUserType);
-    try {
-      var res = await http.post(
-        Uri.parse(API.signUp),
-        body: user.toJson(),
-      );
-      if (res.statusCode == 200) {
-        var responseBodyOfSignUp = jsonDecode(res.body);
-        if (responseBodyOfSignUp['success'] == true) {
-          formKey.currentState!.reset();
-          Fluttertoast.showToast(
-            msg: "Register Successfully Please Login!",
-            fontSize: 23,
-            backgroundColor: Colors.green,
-          );
-        } else {
-          Fluttertoast.showToast(msg: "Error Occurred Please Try Again Later");
-        }
-      } else {
-        Fluttertoast.showToast(msg: "Cannot Hit API");
-      }
-    } catch (e) {
+      print("*********************");
       print(e.toString());
-      Fluttertoast.showToast(msg: e.toString());
+      Fluttertoast.showToast(
+        msg: "ERROR : ${e.toString()}",
+        fontSize: 25,
+        backgroundColor: Colors.red,
+      );
     }
   }
 
@@ -115,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     return 'Please provide value';
                   }
                   final bool emailValid = RegExp(
-                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                       .hasMatch(text);
                   if (emailValid == false) {
                     return 'Please Enter Valid Email E.g ali@gmail.com';
@@ -184,3 +180,4 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
