@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hall_booking_app/screens/dashboard_screen.dart';
 import 'package:hall_booking_app/screens/pre_registration_screen.dart';
+import 'package:hall_booking_app/utilities/user_preferences.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -12,13 +15,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Hall Booking App',
       theme: ThemeData(
         // This is the theme of your application.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:  const PreRegistrationScreen(),
+      home: FutureBuilder(
+          future: RememberUserPrefs.isLoggedIn(),
+          builder: (context, dataSnapShot) {
+            if (dataSnapShot.data == 0) {
+              print("***************************************************${dataSnapShot.data}");
+              return const PreRegistrationScreen();
+            } else {
+              return const DashBoard();
+            }
+          }),
     );
   }
 }

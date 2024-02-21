@@ -1,11 +1,12 @@
 import 'dart:convert';
-import 'dart:js';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hall_booking_app/screens/dashboard_screen.dart';
 import 'package:hall_booking_app/screens/owner_registration.dart';
+import 'package:hall_booking_app/screens/pre_registration_screen.dart';
 import 'package:hall_booking_app/utilities/user_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../api/api_connection.dart';
 import '../model/user.dart';
 
@@ -19,7 +20,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  late String name, email, password, confirmPassword, mobile, address;
+  late String email, password;
 
   loginUserNow() async {
     //List<UserDetail> userDetails = [];
@@ -39,10 +40,10 @@ class _LoginScreenState extends State<LoginScreen> {
           );
 
           // Access specific values in the JSON
-          bool success = jsonObject['success'];
+          //bool success = jsonObject['success'];
           Map<String, dynamic> userData = jsonObject['userData'];
           // Access values within userData
-          int userId = userData['id'];
+          int userId = int.parse(userData['id']);
           String userName = userData['user_name'];
           String userEmail = userData['user_email'];
           String userMobile = userData['user_mobile'];
@@ -55,13 +56,11 @@ class _LoginScreenState extends State<LoginScreen> {
               user_password: userPassword,
               user_mobile: userMobile,
               user_type: userType);
-              RememberUserPrefs.saveRememberUser(userInfo);
-              Navigator.of(context as BuildContext).pushReplacement(MaterialPageRoute(
-                  builder: (context){
-                    return const DashBoard();
-                  }
-              ));
-
+          RememberUserPrefs.saveRememberUser(userInfo);
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) {
+            return const DashBoard();
+          }), (Route<dynamic> route) => false);
         } else {
           Fluttertoast.showToast(msg: "Please Provide Valid Email/Password");
         }
@@ -76,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
         fontSize: 25,
         backgroundColor: Colors.red,
       );
-    }
+    } //catch ends
   }
 
   @override
@@ -110,6 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (text == null || text.isEmpty) {
                     return 'Please provide value';
                   }
+
                   final bool emailValid = RegExp(
                           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                       .hasMatch(text);
@@ -180,4 +180,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
