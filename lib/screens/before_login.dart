@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hall_booking_app/screens/registration.dart';
 import 'package:hall_booking_app/screens/sign_in.dart';
 
 class BeforeLogin extends StatelessWidget {
@@ -81,7 +82,11 @@ class BeforeLogin extends StatelessWidget {
                   children: [
                     Expanded(
                         child: InkWell(
-                          onTap: (){},
+                          onTap: (){
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                              return RegistrationScreen();
+                            }));
+                          },
                           child: myButton(title: "Register", color: Colors.white60)),
                         ),
                     Expanded(child: InkWell(

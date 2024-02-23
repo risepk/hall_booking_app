@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hall_booking_app/screens/registration.dart';
 import 'package:http/http.dart' as http;
 
 import '../api/api_connection.dart';
@@ -60,7 +61,12 @@ class _SignInState extends State<SignIn> {
             return const DashBoard();
           }), (Route<dynamic> route) => false);
         } else {
-          Fluttertoast.showToast(msg: "Please Provide Valid Email/Password");
+          Fluttertoast.showToast(
+            msg: "Please Provide Valid Email or Password",
+            fontSize: 20,
+            backgroundColor: Colors.red,
+
+          );
         }
       } else {
         Fluttertoast.showToast(msg: "Error: Cannot Hit API");
@@ -80,148 +86,177 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white70,
-      body: SafeArea(
-          child: Center(
-        child: Form(
-          key: formKey,
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * .8,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 40,
-                ),
-                Text(
-                  "Lets Connect!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: SafeArea(
+            child: Center(
+          child: Form(
+            key: formKey,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * .8,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 40,
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Welcome back you've been missed! Glad to see you again!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20,
-                    //fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    hintText: "Email",
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(
-                          color: Colors.transparent,
-                        )),
-                    prefixIcon: Icon(Icons.email),
-                  ),
-                  validator: (text) {
-                    if (text == null || text.isEmpty) {
-                      return 'Enter Your Registered Email Please';
-                    }
-
-                    final bool emailValid = RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                        .hasMatch(text);
-                    if (emailValid == false) {
-                      return 'Please Enter Valid Email E.g ali@gmail.com';
-                    }
-                    email = text;
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 18,
-                ),
-                TextFormField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    hintText: "Password",
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(
-                          color: Colors.transparent,
-                        )),
-                    suffixIcon: Icon(Icons.remove_red_eye),
-                    prefixIcon: Icon(Icons.key),
-                  ),
-                  validator: (text) {
-                    if (text == null || text.isEmpty) {
-                      return 'Please enter password';
-                    }
-                    if (text.length < 6) {
-                      return 'Password must be at least 6 characters';
-                    }
-                    if (!RegExp(r'^(?=.*[a-zA-Z])(?=.*\d)').hasMatch(text)) {
-                      return 'Password must contain both letters and numbers';
-                    }
-                    password = text;
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: 200),
-                    Text(
-                      "Reset Password",
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        fontSize: 15,
-                        //fontWeight: FontWeight.bold,
-                      ),
+                  Text(
+                    "Lets Connect!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
-                ),
-                SizedBox(height: 20),
-                InkWell(
-                  onTap: () {
-                    if (formKey.currentState!.validate()) {
-                      loginUserNow();
-                    }
-                  },
-                  child: Container(
-                    height: 70,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        gradient: LinearGradient(colors: [
-                          Colors.deepOrange,
-                          Colors.orange,
-                        ])),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Login",
-                        textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Welcome back you've been missed! Glad to see you again!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                      //fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      hintText: "Email",
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
+                          )),
+                      prefixIcon: Icon(Icons.email),
+                    ),
+                    validator: (text) {
+                      if (text == null || text.isEmpty) {
+                        return 'Enter Your Registered Email Please';
+                      }
+
+                      final bool emailValid = RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(text);
+                      if (emailValid == false) {
+                        return 'Please Enter Valid Email E.g ali@gmail.com';
+                      }
+                      email = text;
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 18,
+                  ),
+                  TextFormField(
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      hintText: "Password",
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
+                          )),
+                      suffixIcon: Icon(Icons.remove_red_eye),
+                      prefixIcon: Icon(Icons.key),
+                    ),
+                    validator: (text) {
+                      if (text == null || text.isEmpty) {
+                        return 'Please enter password';
+                      }
+                      if (text.length < 6) {
+                        return 'Password must be at least 6 characters';
+                      }
+                      if (!RegExp(r'^(?=.*[a-zA-Z])(?=.*\d)').hasMatch(text)) {
+                        return 'Password must contain both letters and numbers';
+                      }
+                      password = text;
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(width: 200),
+                      Text(
+                        "Reset Password",
+                        textAlign: TextAlign.right,
                         style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          //fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () {
+                      if (formKey.currentState!.validate()) {
+                        loginUserNow();
+                      }
+                    },
+                    child: Container(
+                      height: 70,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          gradient: LinearGradient(colors: [
+                            Colors.deepOrange,
+                            Colors.orange,
+                          ])),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Login",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                )
-              ],
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Don't Have Account? ",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return RegistrationScreen();
+                            }));
+                          },
+                          child: Text(
+                            "Sign Up",
+                            style: TextStyle(
+                              color: Colors.deepOrange,
+                              fontSize: 16,
+                            ),
+                          ))
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 }

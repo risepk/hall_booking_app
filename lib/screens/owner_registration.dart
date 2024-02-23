@@ -219,7 +219,8 @@ class _OwnerRegistrationState extends State<OwnerRegistration> {
                 value: _selectedUserType,
                 hint: const Text("User Type"),
                 decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                  ),
                 ),
                 isExpanded: true,
                 onChanged: (value) {
