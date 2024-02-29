@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:hall_booking_app/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,32 +22,27 @@ class RememberUserPrefs {
     int userId = await preferences.getInt("currentUserId") ?? 0;
     return userId;
   }
-  static Future<LoggedInUser> readUserInfo() async {
+
+  static Future<UserDetail> getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    int? userId = await preferences.getInt("currentUserId");
-    String? userName = await preferences.getString("currentUserName");
-    String? userEmail = await preferences.getString("currentUserEmail");
-    String? userMobile = await preferences.getString("currentUserMobile");
-    String? userType = await preferences.getString("currentUserType");
-    return LoggedInUser(
-      userId: userId,
-      userName: userName,
-      userEmail: userEmail,
-      userMobile: userMobile,
-      userType: userType);
+    int? userId = await preferences.getInt("currentUsrId") ?? 0;
+    String? userName = await preferences.getString("currentUserName") ?? null;
+    String? userEmail = await preferences.getString("currentUserEmail") ?? null;
+    String? userMobile =
+        await preferences.getString("currentUserMobile") ?? null;
+    String? userType = await preferences.getString("currentUserType") ?? null;
+    return UserDetail(
+      id: userId,
+      name: userName,
+      email: userEmail,
+      mobile: userMobile,
+    userType: userType);
   }
 }
 
-class LoggedInUser {
-  int? userId;
-  String? userName;
-  String? userEmail;
-  String? userMobile;
-  String? userType;
+class UserDetail {
+  int? id;
+  String? name, email, mobile, userType;
 
-  LoggedInUser({this.userId,
-    this.userName,
-    this.userEmail,
-    this.userMobile,
-    this.userType});
+  UserDetail({this.id, this.name, this.email, this.mobile, this.userType});
 }
