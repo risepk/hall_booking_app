@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hall_booking_app/screens/profile_screen.dart';
 import 'package:hall_booking_app/utilities/user_preferences.dart';
+
+import 'before_login.dart';
 
 class DashBoard extends StatefulWidget {
   const DashBoard({super.key});
@@ -71,9 +75,18 @@ class _DashBoardState extends State<DashBoard> {
                 subtitle: Text('Welcome Hall Owner', style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: Colors.white54
                   )),
-                  trailing: const CircleAvatar(
-                    radius: 30,
-                    backgroundImage: NetworkImage("https://avatars.githubusercontent.com/u/24992385?v=4"),
+                  trailing: InkWell(
+                    onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context)
+                      {
+                        return ProfileScreen();
+                      }
+                      ));
+                    },
+                    child: const CircleAvatar(
+                      radius: 30,
+                      backgroundImage: NetworkImage("https://avatars.githubusercontent.com/u/24992385?v=4"),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 30)
@@ -102,7 +115,15 @@ class _DashBoardState extends State<DashBoard> {
                   itemDashboard('About', CupertinoIcons.question_circle, Colors.blue),
                   itemDashboard('Contact', CupertinoIcons.phone, Colors.pinkAccent),
                   InkWell(
-                    onTap: (){},
+                    onTap: (){
+                      RememberUserPrefs.logout();
+                      Fluttertoast.showToast(msg: "You have Successfully Logout!");
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context)
+                      {
+                        return BeforeLogin();
+                      }
+                      ));
+                    },
                     child: itemDashboard('Logout', Icons.logout_rounded, Colors.grey),
                   ),
                 ],

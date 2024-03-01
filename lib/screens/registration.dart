@@ -238,7 +238,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         borderSide: BorderSide(
                           color: Colors.transparent,
                         )),
-                    suffixIcon: Icon(Icons.remove_red_eye),
+                    suffixIcon: Icon(Icons.install_mobile),
                     prefixIcon: Icon(Icons.phone),
                   ),
                     validator: (text) {

@@ -5,7 +5,7 @@ class RememberUserPrefs {
 //save and remember user info in shared preferences
   static Future<void> saveRememberUser(User userInfo) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    int userId = userInfo.id ?? 0;
+    int userId = userInfo.id!;
     String userName = userInfo.user_name;
     String userEmail = userInfo.user_email;
     String userMobile = userInfo.user_mobile;
@@ -17,6 +17,16 @@ class RememberUserPrefs {
     await preferences.setString("currentUserType", userType);
   }
 
+  static Future<void> logout() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.remove("currentUserId");
+    await preferences.remove("currentUserName");
+    await preferences.remove("currentUserEmail");
+    await preferences.remove("currentUserMobile");
+    await preferences.remove("currentUserPassword");
+    await preferences.remove("currentUserType");
+  }
+
   static Future<int> isLoggedIn() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     int userId = await preferences.getInt("currentUserId") ?? 0;
@@ -25,7 +35,7 @@ class RememberUserPrefs {
 
   static Future<UserDetail> getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    int? userId = await preferences.getInt("currentUsrId") ?? 0;
+    int? userId = await preferences.getInt("currentUsrId");
     String? userName = await preferences.getString("currentUserName") ?? null;
     String? userEmail = await preferences.getString("currentUserEmail") ?? null;
     String? userMobile =
