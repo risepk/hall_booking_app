@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hall_booking_app/screens/dashboard_screen.dart';
 import 'package:hall_booking_app/screens/owner_registration.dart';
-import 'package:hall_booking_app/screens/pre_registration_screen.dart';
 import 'package:hall_booking_app/utilities/user_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import '../api/api_connection.dart';
 import '../model/user.dart';
 

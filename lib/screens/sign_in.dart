@@ -48,13 +48,15 @@ class _SignInState extends State<SignIn> {
           String userMobile = userData['user_mobile'];
           String userType = userData['user_type'];
           String userPassword = userData['user_password'];
+          String photo = userData['photo'];
           User userInfo = User(
               id: userId,
               user_name: userName,
               user_email: userEmail,
               user_password: userPassword,
               user_mobile: userMobile,
-              user_type: userType);
+              user_type: userType,
+              photo: photo);
           RememberUserPrefs.saveRememberUser(userInfo);
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) {

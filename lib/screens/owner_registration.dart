@@ -52,6 +52,7 @@ class _OwnerRegistrationState extends State<OwnerRegistration> {
 
   registerAndSaveUserRecord() async {
     User user = User(
+        id: 0,
         user_name: name,
         user_email: email,
         user_password: password,

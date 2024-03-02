@@ -7,8 +7,6 @@ import 'package:http/http.dart' as http;
 
 import '../api/api_connection.dart';
 import '../model/user.dart';
-import '../utilities/user_preferences.dart';
-import 'dashboard_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -54,6 +52,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   registerAndSaveUserRecord() async {
     User user = User(
+        id: 0,
         user_name: name,
         user_email: email,
         user_password: password,

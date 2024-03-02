@@ -1,18 +1,20 @@
 class User {
-  int? id;
+  late int id;
   late String user_name;
   late String user_email;
   late String user_password;
   late String user_mobile;
   late String user_type;
+  String? photo;
 
   User({
-      this.id,
+      required this.id,
       required this.user_name,
       required this.user_email,
       required this.user_password,
       required this.user_mobile,
-      required this.user_type
+      required this.user_type,
+      this.photo
       });
 
 

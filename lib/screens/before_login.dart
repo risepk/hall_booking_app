@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hall_booking_app/screens/registration.dart';
 import 'package:hall_booking_app/screens/sign_in.dart';

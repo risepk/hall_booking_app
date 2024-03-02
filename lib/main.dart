@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hall_booking_app/screens/before_login.dart';
 import 'package:hall_booking_app/screens/dashboard_screen.dart';
-import 'package:hall_booking_app/screens/pre_registration_screen.dart';
 import 'package:hall_booking_app/utilities/user_preferences.dart';
 
 
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
       home: FutureBuilder(
           future: RememberUserPrefs.isLoggedIn(),
           builder: (context, dataSnapShot) {
-            if (dataSnapShot.data == 0) {
+            if (dataSnapShot.data == null) {
               print("*****${dataSnapShot.data}");
               return const BeforeLogin();
             } else {
