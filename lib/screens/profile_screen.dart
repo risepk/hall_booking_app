@@ -2,10 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hall_booking_app/screens/image_upload.dart';
 import 'package:hall_booking_app/utilities/user_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -15,6 +18,30 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  Future<void> requestCameraPermission() async {
+    var status = await Permission.camera.status;
+
+    if (status.isGranted) {
+      // Camera permission is already granted
+      return;
+    }
+
+    if (status.isDenied) {
+      // Camera permission is denied, request it
+      status = await Permission.camera.request();
+      if (status.isGranted) {
+        // Camera permission granted
+        return;
+      }
+    }
+
+    if (status.isPermanentlyDenied) {
+      // The user opted to never again see the permission request dialog for this app
+      // You may want to direct the user to the settings to manually enable the permission
+      openAppSettings();
+    }
+  }
+
   File? chosenImage;
   bool showLocalImage = false;
 
@@ -23,24 +50,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if(xFile == null){
       return;
     }
+    print('@@@@@@@@@@@@@@@@Image picked: ${xFile.path}');
     chosenImage = File(xFile.path);
     setState(() {
       showLocalImage = true;
     });
-    uploadImage(id);
     //now save to the server using the API
+    uploadImage(id, chosenImage);
   }
 
-  Future<void> uploadImage(int id) async {
-    var uploadurl = Uri.parse('http://booking.mysoft.pk/api/user/login.php');
+  Future<void> uploadImage(int id, File? chosenImage) async {
+    var uploadurl = Uri.parse('http://booking.mysoft.pk/api/user/upload-image.php');
     try{
-      List<int> imageBytes = chosenImage!.readAsBytesSync();
+      List<int> imageBytes = await chosenImage!.readAsBytesSync();
       String baseimage = base64Encode(imageBytes);
       var response = await http.post(
           uploadurl,
           body: {
             'image': baseimage,
-            'id':id,
+            'id':"$id",
           }
       );
       if(response.statusCode == 200){
@@ -49,12 +77,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
           print(jsondata["msg"]);
         }else{
           print("Upload successful");
+          Fluttertoast.showToast(msg: "Upload successful",
+            fontSize: 25, backgroundColor: Colors.green,
+          );
+          String? photo = jsondata["photo"];
+          //upload successful now change the photo in shared preferences
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+          if(photo != null) {
+            await preferences.setString('currentUserPhoto', photo);
+            Fluttertoast.showToast(msg: "Local Image Sync with online",
+              fontSize: 25, backgroundColor: Colors.green,
+            );
+          } else {
+            Fluttertoast.showToast(msg: "PHOTO IS NULL",
+              fontSize: 25, backgroundColor: Colors.red,
+            );
+          }
         }
       }else{
         print("Error during connection to server");
+        Fluttertoast.showToast(msg: "Error during connection to server",
+          fontSize: 25, backgroundColor: Colors.red,
+        );
       }
     }catch(e){
-      print("Error during converting to Base64");
+      print("*************    $e    *************");
+      Fluttertoast.showToast(msg: e.toString(),
+        fontSize: 25, backgroundColor: Colors.red,
+      );
     }
   }
 
@@ -89,7 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           radius: 70,
                           backgroundImage: showLocalImage ? FileImage(chosenImage!) as ImageProvider :
                           data!.photo == null ? AssetImage('assets/images/sam.jpg') as ImageProvider :
-                          NetworkImage("https://avatars.githubusercontent.com/u/24992385?v=4"),
+                          NetworkImage("${data.photo}"),
                         child: IconButton(
                           icon: Icon(Icons.camera_alt_outlined),
                           onPressed: (){
@@ -103,6 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         title: const Text("From Camera"),
                                         onTap: (){
                                           Navigator.of(context).pop();
+
                                           pickImageFrom(ImageSource.camera, data!.id);
                                         },
                                       ),

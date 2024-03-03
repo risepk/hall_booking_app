@@ -13,11 +13,7 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
-/*  static Future<String?> getUserName() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? userName = await preferences.getString("currentUserName") ?? null;
-    return userName;
-  }*/
+  String? photo;
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
@@ -53,6 +49,7 @@ class _DashBoardState extends State<DashBoard> {
                         } else if (snapshot.hasData) {
                           // Extracting data from snapshot object
                           final data = snapshot.data;
+                          String? photo = snapshot.data?.photo;
                           return Text(
                             data!.name.toString(),
                               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -83,9 +80,11 @@ class _DashBoardState extends State<DashBoard> {
                       }
                       ));
                     },
-                    child: const CircleAvatar(
+                    child: CircleAvatar(
                       radius: 30,
-                      backgroundImage: NetworkImage("https://avatars.githubusercontent.com/u/24992385?v=4"),
+                      backgroundImage:
+                      photo  != null ?  NetworkImage(photo!) :
+                      AssetImage('assets/images/sam.jpg') as ImageProvider,
                     ),
                   ),
                 ),

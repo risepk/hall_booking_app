@@ -23,7 +23,7 @@ class _SignInState extends State<SignIn> {
 
   loginUserNow() async {
     //List<UserDetail> userDetails = [];
-    try {
+    //try {
       var res = await http.post(
         Uri.parse(API.login),
         body: {'user_email': email, 'user_password': password},
@@ -48,7 +48,7 @@ class _SignInState extends State<SignIn> {
           String userMobile = userData['user_mobile'];
           String userType = userData['user_type'];
           String userPassword = userData['user_password'];
-          String photo = userData['photo'];
+          String? photo = userData['photo'];
           User userInfo = User(
               id: userId,
               user_name: userName,
@@ -73,7 +73,7 @@ class _SignInState extends State<SignIn> {
       } else {
         Fluttertoast.showToast(msg: "Error: Cannot Hit API");
       }
-    } catch (e) {
+    /*} catch (e) {
       print("*********************");
       print(e.toString());
       Fluttertoast.showToast(
@@ -81,7 +81,7 @@ class _SignInState extends State<SignIn> {
         fontSize: 25,
         backgroundColor: Colors.red,
       );
-    } //catch ends
+    } //catch ends*/
   }
 
   @override

@@ -16,7 +16,9 @@ class RememberUserPrefs {
     await preferences.setString("currentUserEmail", userEmail);
     await preferences.setString("currentUserMobile", userMobile);
     await preferences.setString("currentUserType", userType);
-    await preferences.setString("currentUserPhoto", photo!);
+    if(photo != null){
+      await preferences.setString("currentUserPhoto", photo);
+    }
   }
 
   static Future<void> logout() async {
