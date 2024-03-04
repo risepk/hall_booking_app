@@ -50,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if(xFile == null){
       return;
     }
-    print('@@@@@@@@@@@@@@@@Image picked: ${xFile.path}');
+    //print('@@@@@@@@@@@@@@@@Image picked: ${xFile.path}');
     chosenImage = File(xFile.path);
     setState(() {
       showLocalImage = true;
@@ -60,6 +60,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> uploadImage(int id, File? chosenImage) async {
+    var uploadUrl = Uri.parse('http://booking.mysoft.pk/api/user/profile-picture.php');
+
+    try {
+      var request = http.MultipartRequest('POST', uploadUrl)
+        ..fields['id'] = '$id'
+        ..files.add(await http.MultipartFile.fromPath('image', chosenImage!.path));
+
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        // Handle the response
+        var responseData = await response.stream.bytesToString();
+        var jsonData = json.decode(responseData);
+
+        if (jsonData["error"]) {
+          print(jsonData["msg"]);
+          Fluttertoast.showToast(msg: " ${jsonData["msg"]}",
+            fontSize: 25, backgroundColor: Colors.green,
+          );
+        } else {
+          print("Upload successful");
+          Fluttertoast.showToast(msg: "Upload Successful!",
+            fontSize: 25, backgroundColor: Colors.green,
+          );
+          String? photo = jsonData["photo"];
+          // Upload successful, now handle the photo URL or other data
+          if(photo != null) {
+            SharedPreferences preferences = await SharedPreferences
+                .getInstance();
+            await preferences.setString('currentUserPhoto', photo);
+            Fluttertoast.showToast(msg: " Locally Updated ",
+              fontSize: 25, backgroundColor: Colors.green,
+            );
+          }
+        }
+      } else {
+        print("Error during connection to server");
+      }
+    } catch (e) {
+      print("*************    $e    *************");
+    }
+  }
+
+
+  /*Future<void> uploadImage(int id, File? chosenImage) async {
     var uploadurl = Uri.parse('http://booking.mysoft.pk/api/user/upload-image.php');
     try{
       List<int> imageBytes = await chosenImage!.readAsBytesSync();
@@ -106,7 +151,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         fontSize: 25, backgroundColor: Colors.red,
       );
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +183,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         CircleAvatar(
                           radius: 70,
                           backgroundImage: showLocalImage ? FileImage(chosenImage!) as ImageProvider :
-                          data!.photo == null ? AssetImage('assets/images/sam.jpg') as ImageProvider :
+                          data!.photo.isEmpty ? AssetImage('assets/images/sam.jpg') as ImageProvider :
                           NetworkImage("${data.photo}"),
                         child: IconButton(
                           icon: Icon(Icons.camera_alt_outlined),

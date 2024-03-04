@@ -5,7 +5,7 @@ class User {
   late String user_password;
   late String user_mobile;
   late String user_type;
-  String? photo;
+  late String photo;
 
   User({
       required this.id,
@@ -14,7 +14,7 @@ class User {
       required this.user_password,
       required this.user_mobile,
       required this.user_type,
-      this.photo
+      required this.photo
       });
 
 
@@ -34,5 +34,6 @@ class User {
    'user_password': user_password,
    'user_mobile': user_mobile,
    'user_type': user_type,
+    'photo':photo
   };
 }

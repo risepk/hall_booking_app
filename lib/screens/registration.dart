@@ -57,7 +57,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         user_email: email,
         user_password: password,
         user_mobile: mobile,
-        user_type: _selectedUserType);
+        user_type: _selectedUserType,
+        photo: '');
     try {
       var res = await http.post(
         Uri.parse(API.signUp),
@@ -240,21 +241,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     suffixIcon: Icon(Icons.install_mobile),
                     prefixIcon: Icon(Icons.phone),
                   ),
-                    validator: (text) {
-                      if (text == null || text.isEmpty) {
-                        return 'Please provide value';
-                      }
-                      if (text.length < 11) {
-                        return 'Enter a valid Mobile #';
-                      }
+                  validator: (text) {
+                    if (text == null || text.isEmpty) {
+                      return 'Please provide value';
+                    }
+                    if (text.length < 11) {
+                      return 'Enter a valid Mobile #';
+                    }
 
-                      mobile = text;
-                      return null;
-                    },
+                    mobile = text;
+                    return null;
+                  },
                 ),
                 SizedBox(height: 10),
                 Container(
-
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     color: Colors.white,
@@ -262,15 +262,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   child: DropdownButtonFormField(
                     value: _selectedUserType,
                     hint: const Text("User Type"),
-                    decoration:  InputDecoration(
+                    decoration: InputDecoration(
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                        )
-                      ),
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          )),
                     ),
-
                     isExpanded: true,
                     onChanged: (value) {
                       setState(() {

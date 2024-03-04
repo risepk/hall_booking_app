@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       home: FutureBuilder(
           future: RememberUserPrefs.isLoggedIn(),
           builder: (context, dataSnapShot) {
-            if (dataSnapShot.data == null) {
+            if (dataSnapShot.data == 0) {
               print("*****${dataSnapShot.data}");
               return const BeforeLogin();
             } else {

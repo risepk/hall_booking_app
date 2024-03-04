@@ -10,15 +10,13 @@ class RememberUserPrefs {
     String userEmail = userInfo.user_email;
     String userMobile = userInfo.user_mobile;
     String userType = userInfo.user_type;
-    String? photo = userInfo.photo;
+    String photo = userInfo.photo;
     await preferences.setInt("currentUserId", userId);
     await preferences.setString("currentUserName", userName);
     await preferences.setString("currentUserEmail", userEmail);
     await preferences.setString("currentUserMobile", userMobile);
     await preferences.setString("currentUserType", userType);
-    if(photo != null){
-      await preferences.setString("currentUserPhoto", photo);
-    }
+    await preferences.setString("currentUserPhoto", photo);
   }
 
   static Future<void> logout() async {
@@ -34,18 +32,18 @@ class RememberUserPrefs {
 
   static Future<int> isLoggedIn() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    int userId = await preferences.getInt("currentUserId")!;
+    int userId = await preferences.getInt("currentUserId") ?? 0;
     return userId;
   }
 
   static Future<UserDetail> getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    int userId = await preferences.getInt("currentUserId")!;
-    String? userName = await preferences.getString("currentUserName") ?? null;
-    String? userEmail = await preferences.getString("currentUserEmail") ?? null;
-    String? userMobile = await preferences.getString("currentUserMobile") ?? null;
-    String? userType = await preferences.getString("currentUserType") ?? null;
-    String? photo = await preferences.getString("currentUserPhoto") ?? null;
+    int userId = await preferences.getInt("currentUserId") ?? 0;
+    String userName = await preferences.getString("currentUserName")  ?? '' ;
+    String userEmail = await preferences.getString("currentUserEmail") ?? '';
+    String userMobile = await preferences.getString("currentUserMobile") ?? '';
+    String userType = await preferences.getString("currentUserType") ?? '';
+    String photo = await preferences.getString("currentUserPhoto") ?? '';
     return UserDetail(
       id: userId,
       name: userName,
@@ -58,7 +56,8 @@ class RememberUserPrefs {
 
 class UserDetail {
   late int id;
-  String? name, email, mobile, userType, photo;
+  late String name, email, mobile, userType;
+  late String photo;
 
-  UserDetail({ required this.id, this.name, this.email, this.mobile, this.userType, this.photo});
+  UserDetail({ required this.id, required this.name, required this.email, required this.mobile, required this.userType, required this.photo});
 }
