@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hall_booking_app/screens/image_upload.dart';
 import 'package:hall_booking_app/utilities/user_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
@@ -194,8 +193,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       ListTile(
-                                        leading: const Icon(Icons.camera),
-                                        title: const Text("From Camera"),
+                                          tileColor: Colors.green,
+                                        leading: const Icon(Icons.camera, color: Colors.white,),
+                                        title: const Text("From Camera", style: TextStyle(
+                                          color: Colors.white,
+                                        ),),
                                         onTap: (){
                                           Navigator.of(context).pop();
 
@@ -203,8 +205,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         },
                                       ),
                                       ListTile(
-                                        leading: const Icon(Icons.browse_gallery),
-                                        title: const Text("From Gallery"),
+                                        tileColor:Colors.blue,
+                                        leading: const Icon(Icons.browse_gallery, color: Colors.white,),
+                                        title: const Text("From Gallery", style: TextStyle(
+                                          color: Colors.white,
+                                        ),),
                                         onTap: (){
                                           Navigator.of(context).pop();
                                           pickImageFrom(ImageSource.gallery, data!.id);
@@ -230,11 +235,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           width: double.infinity,
                           child: InkWell(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context)
+                             /* Navigator.of(context).push(MaterialPageRoute(builder: (context)
                               {
                                 return ImageUpload();
                               }
-                              ));
+                              ));*/
                             },
                             child: Container(
                               height: 70,
