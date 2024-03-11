@@ -3,13 +3,18 @@ import 'package:flutter/services.dart';
 import 'package:hall_booking_app/screens/before_login.dart';
 import 'package:hall_booking_app/screens/dashboard_screen.dart';
 import 'package:hall_booking_app/utilities/user_preferences.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 
-void main() {
+Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(
   SystemUiOverlayStyle(
    statusBarColor: Colors.transparent
   ));
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Request location permission
+  await Permission.location.request();
   runApp(const MyApp());
 }
 

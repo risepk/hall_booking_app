@@ -1,6 +1,6 @@
-# hall_booking_app
+# weeding_hall_booking_app
 
-A new Flutter project.
+A new Flutter project for Booking Weeding/Events & Banquet Halls for different life events.
 
 ## Getting Started
 

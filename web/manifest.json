@@ -1,11 +1,11 @@
 {
-    "name": "hall_booking_app",
-    "short_name": "hall_booking_app",
+    "name": "weeding_hall_booking_app",
+    "short_name": "weeding_hall_booking_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "A new Flutter project for Booking Weeding/Events & Banquet Halls for different life events.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

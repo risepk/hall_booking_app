@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "hall_booking_app" "\0"
+            VALUE "CompanyName", "com.risepk" "\0"
+            VALUE "FileDescription", "weeding_hall_booking_app" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "hall_booking_app" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "hall_booking_app.exe" "\0"
-            VALUE "ProductName", "hall_booking_app" "\0"
+            VALUE "InternalName", "weeding_hall_booking_app" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2024 com.risepk. All rights reserved." "\0"
+            VALUE "OriginalFilename", "weeding_hall_booking_app.exe" "\0"
+            VALUE "ProductName", "weeding_hall_booking_app" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

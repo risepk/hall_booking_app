@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hall_booking_app/screens/add_hall.dart';
+import 'package:hall_booking_app/screens/hall_map.dart';
 import 'package:hall_booking_app/screens/profile_screen.dart';
 import 'package:hall_booking_app/utilities/user_preferences.dart';
 
@@ -135,8 +136,16 @@ class _DashBoardState extends State<DashBoard> {
                     child: itemDashboard('Register Hall',
                         CupertinoIcons.music_house_fill, Colors.deepOrange),
                   ),
-                  itemDashboard(
-                      'My Halls', CupertinoIcons.building_2_fill, Colors.green),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                        return HallMap();
+                      }));
+
+                    },
+                    child: itemDashboard(
+                        'My Halls', CupertinoIcons.building_2_fill, Colors.green),
+                  ),
                   itemDashboard(
                       'About', CupertinoIcons.question_circle, Colors.blue),
                   itemDashboard(
